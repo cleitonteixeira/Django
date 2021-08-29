@@ -3,6 +3,4 @@
 
 ### Sistema para teste.
 
- 
-
-:computer: Sou um desenvolvedor back-end!
+:computer: Desenvolvido por Cleiton Teixeira
