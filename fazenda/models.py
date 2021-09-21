@@ -33,6 +33,7 @@ class Farms(Base):
         return self.name
 
 class Seasons(Base):
+    farms = models.ForeignKey(Farms, related_name='season', on_delete=models.CASCADE)
     name = models.CharField(blank=False, unique=True, max_length=70)
     latitude = models.CharField(blank=False, unique=True, max_length=70)
     longitude = models.CharField(blank=False, unique=True, max_length=70)

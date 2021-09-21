@@ -1,4 +1,6 @@
+from django.db.models.query import QuerySet
 from rest_framework import generics, serializers
+from rest_framework.generics import get_object_or_404
 
 from ..models import Seasons, Users, Farms
 from .serializers import SeasonsSerializer, UsersSerializer, FarmsSerializer
@@ -28,7 +30,16 @@ class SeasonsAPIView(generics.ListCreateAPIView):
     queryset = Seasons.objects.all()
     serializer_class = SeasonsSerializer
 
+    def get_queryset(self):
+        if self.kwargs.get('farm_pk'):
+            return self.queryset.filter(farms_id=self.kwargs.get('farm_pk'))
+        return self.QuerySet.all()
 
 class SeasonAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Seasons.objects.all()
     serializer_class = SeasonsSerializer
+
+    def get_object(self):
+        if self.kwargs.get('farm_pk'):
+            return get_object_or_404(self.get_queryset(),pk=self.kwargs.get('season_pk'))
+        return get_object_or_404(self.get_queryset(), pk=self.kwargs.get('season_pk'))

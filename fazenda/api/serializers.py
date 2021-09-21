@@ -43,6 +43,7 @@ class SeasonsSerializer(serializers.ModelSerializer):
             'name',
             'latitude',
             'longitude',
+            'farms',
             'created',
             'modified'
         )
