@@ -33,7 +33,7 @@ class SeasonsAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         if self.kwargs.get('farm_pk'):
             return self.queryset.filter(farms_id=self.kwargs.get('farm_pk'))
-        return self.QuerySet.all()
+        return self.queryset.all()
 
 class SeasonAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Seasons.objects.all()
