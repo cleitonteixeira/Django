@@ -1,6 +1,25 @@
 from django.urls import path
 
-from .viewsets import UsersAPIView, FarmsAPIView, SeasonsAPIView, UserAPIView, FarmAPIView, SeasonAPIView
+from rest_framework.routers import SimpleRouter
+
+from .viewsets import (
+    UsersAPIView, 
+    FarmsAPIView, 
+    SeasonsAPIView, 
+    UserAPIView, 
+    FarmAPIView, 
+    SeasonAPIView,
+    FarmViewSet,
+    SeasonViewSet,
+    UserViewSet
+    )
+
+
+router = SimpleRouter()
+router.register('farms', FarmViewSet)
+router.register('seasons', SeasonViewSet)
+router.register('users', UserViewSet)
+
 
 urlpatterns = [
     path('users/', UsersAPIView.as_view(), name='users'),
