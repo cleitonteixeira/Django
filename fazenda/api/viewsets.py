@@ -1,26 +1,19 @@
-from rest_framework import generics
+from django.db.models import query
+from rest_framework import generics, mixins, serializers
 from rest_framework.generics import get_object_or_404
+from rest_framework import permissions, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import Seasons, Users, Farms
-from .serializers import SeasonsSerializer, UsersSerializer, FarmsSerializer
+from ..models import Seasons, Farms, Users
+from .serializers import SeasonsSerializer, FarmsSerializer, UsersSerializer
 
 """
 API V1
 """
-
-class UsersAPIView(generics.ListCreateAPIView):
-    queryset = Users.objects.all()
-    serializer_class = UsersSerializer
-
-
-class UserAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Users.objects.all()
-    serializer_class = UsersSerializer
-
 
 class FarmsAPIView(generics.ListCreateAPIView):
     queryset = Farms.objects.all()
@@ -58,16 +51,24 @@ class FarmViewSet(viewsets.ModelViewSet):
     queryset = Farms.objects.all()
     serializer_class = FarmsSerializer
 
+    permission_classes = [IsAuthenticated]
+
     @action(detail=True, methods=['get'])
-    def seasons(self, resquest, pk=None):
+    def seasons(self, request, pk=None):
         farm = self.get_object()
         serializer = SeasonsSerializer(farm.season.all(), many=True)
         return Response(serializer.data)
 
 class SeasonViewSet(viewsets.ModelViewSet):
     queryset = Seasons.objects.all()
+
+    permission_classes = [IsAuthenticated]
+
     serializer_class = SeasonsSerializer
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserAddViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Users.objects.all()
+
+    permission_classes = [AllowAny]
+
     serializer_class = UsersSerializer
